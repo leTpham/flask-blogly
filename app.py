@@ -24,12 +24,9 @@ def homepage():
 
 @app.get('/users')
 def show_users():
-    ##links to view detail page
-    ##feed data to populate user list
-    ##link to add user form
     ## each name is a link to route for show_user based on the target's primary key
     all_users = User.query.all()
-
+    
     return render_template('user_listing.html', all_users = all_users)
 
 @app.get('/users/new')
@@ -38,7 +35,19 @@ def show_add_user_form():
 
 @app.post('/users/new')
 def add_user():
-    #process add form, add new user
+    #get form data
+    form_data = request.form
+    first_name = form_data["first_name"]
+    last_name = form_data["last_name"]
+    image_url = form_data["image_url"]
+    
+    #instantiate new user
+    new_user = User(first_name = first_name, last_name = last_name, image_url = image_url)
+    
+    #send user information to database and update
+    db.session.add(new_user)
+    db.session.commit()
+
     return redirect('/users')
 
 @app.get('/users/<int:user_id>')
@@ -50,19 +59,32 @@ def show_user(user_id):
     return render_template('user_detail.html', user_id = user_id,
     first_name = first_name, last_name = last_name, image_url = image_url)
 
-@app.get('/user/<int:user_id>/edit')
-def show_edit_user_page():
+@app.get('/users/<int:user_id>/edit')
+def show_edit_user_page(user_id):
+    return render_template('user_edit.html', user_id=user_id)
 
-    return render_template('user_edit.html')
 
-@app.post('/user/<int:user_id>/edit')
-def edit_user():
+@app.post('/users/<int:user_id>/edit')
+def edit_user(user_id):
     #use the user id to update DB information?
 
+    form_data = request.form
+    
+    User.query.get(user_id).first_name = form_data["first_name"]
+    User.query.get(user_id).last_name = form_data["last_name"]
+    User.query.get(user_id).image_url = form_data["image_url"]
+    
+    db.session.commit()
+    
     return redirect('/users')
 
-@app.post('/user/<int:user_id>/delete')
-def delete_user():
+@app.post('/users/<int:user_id>/delete')
+def delete_user(user_id):
     #use user id to delete DB information?
     #flash message user deleted?
+    
+    User.query.filter(User.id == user_id).delete()
+    
+    db.session.commit()
+    
     return redirect('/users')

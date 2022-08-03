@@ -4,9 +4,15 @@
 
 {% block content %}
 
-<!-- TODO: Pull username and photo, add edit/delete buttons. -->
-<h1>TEST USER</h1>
 
-<div>{{first_name}} {{last_name}} {{image_URL}}</div>
+<div><h1> <img src="{{image_url}}">  {{first_name}} {{last_name}}</h1></div>
+
+<div>
+    <a href="/users/{{user_id}}/edit">Edit Profile</a>
+    <br>
+    <form action="/users/{{user_id}}/delete" method="POST">
+        <button>Delete Profile</button>
+    </form>  
+</div>
 
 {% endblock %}
