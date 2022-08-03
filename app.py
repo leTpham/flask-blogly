@@ -27,7 +27,10 @@ def show_users():
     ##links to view detail page
     ##feed data to populate user list
     ##link to add user form
-    return render_template('user_listing.html')
+    ## each name is a link to route for show_user based on the target's primary key
+    all_users = User.query.all()
+
+    return render_template('user_listing.html', all_users = all_users)
 
 @app.get('/users/new')
 def show_add_user_form():
