@@ -1,6 +1,6 @@
 """Blogly application."""
 
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, request
 from models import db, connect_db, User
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -18,7 +18,7 @@ db.create_all()
 
 # SKELETON
 
-@app.get('/') 
+@app.get('/')
 def homepage():
     return redirect('/users')
 
@@ -39,9 +39,13 @@ def add_user():
     return redirect('/users')
 
 @app.get('/users/<int:user_id>')
-def show_user():
+def show_user(user_id):
     #need to access user_id
-    return render_template('user_detail.html')
+    first_name = User.query.get(user_id).first_name
+    last_name = User.query.get(user_id).last_name
+    image_url = User.query.get(user_id).image_url
+    return render_template('user_detail.html', user_id = user_id,
+    first_name = first_name, last_name = last_name, image_url = image_url)
 
 @app.get('/user/<int:user_id>/edit')
 def show_edit_user_page():
@@ -51,7 +55,7 @@ def show_edit_user_page():
 @app.post('/user/<int:user_id>/edit')
 def edit_user():
     #use the user id to update DB information?
-    
+
     return redirect('/users')
 
 @app.post('/user/<int:user_id>/delete')
@@ -59,4 +63,3 @@ def delete_user():
     #use user id to delete DB information?
     #flash message user deleted?
     return redirect('/users')
-    
