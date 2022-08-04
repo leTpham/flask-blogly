@@ -29,7 +29,7 @@ class User(db.Model):
     image_url = db.Column(db.Text,
                     nullable=True,
                     default = DEFAULT_IMAGE_URL)
-    posts = db.relationship('Post', backref = 'user')
+    user_posts = db.relationship('Post', backref = 'user')
 
 class Post(db.Model):
     """Post"""
@@ -45,7 +45,7 @@ class Post(db.Model):
                      nullable=False)
     created_at = db.Column(db.DateTime,
                      nullable=False,
-                    default=db.func.now)
-    user_id = db.Column(db.Text,
+                    default=db.func.now())
+    user_id = db.Column(db.Integer,
                      db.ForeignKey('users.id'),
                       nullable=False,)
