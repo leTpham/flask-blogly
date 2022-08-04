@@ -64,7 +64,7 @@ class UserViewTestCase(TestCase):
         db.session.add_all([test_post])
         db.session.commit()
 
-        self.post_id = test_post.id
+        self.post = test_post
 
 
 
@@ -88,7 +88,11 @@ class UserViewTestCase(TestCase):
             resp = c.get(f"/users/{self.user_id}")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
+            
             self.assertIn("<!-- testing for /users/user_id -->", html)
+            
+            #Test post appears in user's list:
+            self.assertIn(f'{self.post.title}',html)
 
     def test_user_edit_form(self):
         with self.client as c:
@@ -97,7 +101,7 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn(f"<!-- testing for route /users/{self.user_id}/edit -->", html)
 
-    def test_edit_form_submit(self):
+    def test_user_edit_form_submit(self):
         with self.client as c:
             resp = c.post(f'/users/{self.user_id}/edit',
                             data={'first_name': 'Keys',
@@ -116,10 +120,43 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 302)
             self.assertNotIn("test_first_two", html)
-
+    
     def test_show_post(self):
         with self.client as c:
-            resp = c.get(f"/posts/{self.post_id}")
+            resp = c.get(f"/posts/{self.post.id}")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn(f"<!-- testing for route /posts/{self.post_id}-->", html)
+            self.assertIn(f"<!-- testing for route /posts/{self.post.id}-->", html)
+    
+    def test_post_form_submit(self):
+        with self.client as c:
+            resp = c.post(f'/users/{self.user_id}/posts/new',
+                          data = {'title': 'IMPORTANT SQL TIP',
+                                  'content': 'REFERENTIAL INTEGRITY',
+                                  'user_id': self.user_id},
+                          follow_redirects=True)
+            html = resp.get_data(as_text=True)
+             
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('IMPORTANT SQL TIP', html)
+            
+    # test editing?
+    
+    def test_post_edit_form_submit(self):
+        with self.client as c:
+            resp = c.post(f'/posts/{self.post.id}/edit',
+                             data = {'title': 'ANOTHER NEW TIP',
+                                  'content': 'TABLES ARE CONFUSING'},
+                             follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('ANOTHER NEW TIP', html)    
+    
+    def test_delete_post(self):
+        with self.client as c:
+            resp = c.post(f'/posts/{self.post.id}/delete')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 302)
+            self.assertNotIn('ANOTHER NEW TIP', html)

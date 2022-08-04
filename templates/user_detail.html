@@ -8,7 +8,7 @@
 <div><h1> <img src="{{image_url}}">  {{first_name}} {{last_name}}</h1></div>
 <!-- testing for /users/user_id -->
 <div>
-    <a href="/users/{{user_id}}/edit">Edit Profile</a>
+    <button><a href="/users/{{user_id}}/edit">Edit Profile</a></button>
     <br>
     <form action="/users/{{user_id}}/delete" method="POST">
         <button>Delete Profile</button>
