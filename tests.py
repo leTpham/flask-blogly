@@ -57,6 +57,7 @@ class UserViewTestCase(TestCase):
         """Clean up any fouled transaction."""
         db.session.rollback()
 
+
     def test_list_users(self):
         with self.client as c:
             resp = c.get("/users")
@@ -64,3 +65,37 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn("test_first", html)
             self.assertIn("test_last", html)
+
+    def test_user_profile(self):
+        with self.client as c:
+            resp = c.get(f"/users/{self.user_id}")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("<!-- testing for /users/user_id -->", html)
+
+    def test_user_edit_form(self):
+        with self.client as c:
+            resp = c.get(f"/users/{self.user_id}/edit")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn(f"<!-- testing for route /users/{self.user_id}/edit -->", html)
+
+    def test_edit_form_submit(self):
+        with self.client as c:
+            resp = c.post(f'/users/{self.user_id}/edit',
+                            data={'first_name': 'Keys',
+                                    'last_name': 'Soun',
+                                        'image_url': DEFAULT_IMAGE_URL
+                            }, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Keys', html)
+
+    def test_delete_user(self):
+        with self.client as c:
+            resp = c.post(f'/users/{self.user_id}/delete')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 302)
+            self.assertNotIn("test_first", html)
