@@ -11,7 +11,7 @@ def connect_db(app):
     db.init_app(app)
 
 
-
+DEFAULT_IMAGE_URL = "https://static.independent.co.uk/2021/12/03/15/Pisco%20Cat%20puss%20in%20boots-1.jpg?width=1200"
 
 
 class User(db.Model):
@@ -27,7 +27,8 @@ class User(db.Model):
     last_name = db.Column(db.String(50),
                      nullable=False)
     image_url = db.Column(db.Text,
-                    nullable=True) #maybe DEFAULT here??
+                    nullable=True,
+                    default = DEFAULT_IMAGE_URL) #maybe DEFAULT here??
 
 
     # def greet(self):
