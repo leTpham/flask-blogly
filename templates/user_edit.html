@@ -6,7 +6,7 @@
 
 <h1>Edit a user</h1>
 
-<!-- testing for route /users/{{user_id}}/edit -->
+<!-- testing for route /users/{{user_data.id}}/edit -->
 
 <form action="/users/{{user_data.id}}/edit" METHOD = "POST">
   <label for="first_name">First Name</label>
@@ -18,7 +18,7 @@
   <label for="image_url">Image URL</label>
   <input type="text" name = "image_url" value = "{{user_data.image_url}}">
 
-  
+
   <button type="submit">Edit</button>
 </form>
   <button><a href="/users/{{user_data.id}}" class="btn">Cancel</a></button>

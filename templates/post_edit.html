@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+<!-- {% block title %}My awesome page title{% endblock %} -->
+
+{% block content %}
+
+<h1>Edit a user</h1>
+
+<!-- testing for route ... -->
+
+<form action="/posts/{{post_data.id}}/edit" METHOD = "POST">
+  <label for="title">Title</label>
+  <input type="text" name = "title" value = "{{post_data.title}}">
+
+  <label for="last_name">Content</label>
+  <textarea type="text" name = "content">{{post_data.content}}</textarea>
+
+
+  <button type="submit">Edit</button>
+</form>
+  <button><a href="/posts/{{post_data.id}}" class="btn">Cancel</a></button>
+
+{% endblock %}

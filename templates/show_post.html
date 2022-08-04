@@ -6,7 +6,7 @@
 
 
 <div><h1> {{post_data.title}} </h1></div>
-
+<!-- testing for route /posts/{{post_data.id}}-->
 <div>
     <p>{{post_data.content}}</p>
     <br>
@@ -15,5 +15,10 @@
 </div>
 
 <!--add buttons-->
+<button ><a href="/posts/{{post_data.id}}/edit">Edit Post</a></button>
+<!-- delete button needs to be in form and will post-->
+<form action="/posts/{{post_data.id}}/delete" method="POST">
+    <button>Delete Post</button>
+</form>
 
 {% endblock %}
