@@ -18,9 +18,9 @@
   <label for="image_url">Image URL</label>
   <input type="text" name = "image_url" value = "{{user_data.image_url}}">
 
-  <!-- cancel button -->
-  <button type="submit">Add</button>
-
+  
+  <button type="submit">Edit</button>
 </form>
+  <button><a href="/users/{{user_data.id}}" class="btn">Cancel</a></button>
 
 {% endblock %}

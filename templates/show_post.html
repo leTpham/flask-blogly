@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}My awesome page title{% endblock %}
+
+{% block content %}
+
+
+<div><h1> {{post_data.title}} </h1></div>
+
+<div>
+    <p>{{post_data.content}}</p>
+    <br>
+    <i>By {{post_data.user.first_name}} {{post_data.user.last_name}}</i>
+
+</div>
+
+<!--add buttons-->
+
+{% endblock %}

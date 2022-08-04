@@ -15,4 +15,15 @@
     </form>
 </div>
 
+<div><h2>Posts</h2>
+    <ul>
+        {% for post in all_posts %}
+        <li> <a href="/posts/{{post.id}}">{{ post.title }} </a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+<button><a href="/users/{{user_id}}/posts/new">Add Post</a></button>
+
 {% endblock %}
