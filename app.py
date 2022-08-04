@@ -65,6 +65,7 @@ def show_user(user_id):
     image_url = User.query.get(user_id).image_url
     #user_data = User.q...
 
+    #user_data.user_posts
     all_posts = Post.query.filter_by(user_id = user_id)
 
     return render_template('user_detail.html', user_id = user_id,
@@ -163,7 +164,7 @@ def edit_post(post_id):
     Return user to their page."""
     form_data = request.form
 
-    #restructure using user_data
+    #restructure using form_data
     Post.query.get(post_id).title = form_data["title"]
     Post.query.get(post_id).content = form_data["content"]
 
