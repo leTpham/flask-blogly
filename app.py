@@ -60,17 +60,18 @@ def add_user():
 @app.get('/users/<int:user_id>')
 def show_user(user_id):
     """Show information about the give user."""
-
     first_name = User.query.get(user_id).first_name
     last_name = User.query.get(user_id).last_name
     image_url = User.query.get(user_id).image_url
+    #user_data = User.q...
     return render_template('user_detail.html', user_id = user_id,
     first_name = first_name, last_name = last_name, image_url = image_url)
 
 @app.get('/users/<int:user_id>/edit')
 def show_edit_user_page(user_id):
     """Show the edit page for a user."""
-    return render_template('user_edit.html', user_id=user_id)
+    user_data = User.query.get_or_404(user_id)
+    return render_template('user_edit.html', user_data = user_data)
 
 
 @app.post('/users/<int:user_id>/edit')

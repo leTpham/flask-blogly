@@ -8,15 +8,15 @@
 
 <!-- testing for route /users/{{user_id}}/edit -->
 
-<form action="/users/{{user_id}}/edit" METHOD = "POST">
+<form action="/users/{{user_data.id}}/edit" METHOD = "POST">
   <label for="first_name">First Name</label>
-  <input type="text" name = "first_name">
+  <input type="text" name = "first_name" value = "{{user_data.first_name}}">
 
   <label for="last_name">Last Name</label>
-  <input type="text" name = "last_name">
+  <input type="text" name = "last_name" value = "{{user_data.last_name}}">
 
   <label for="image_url">Image URL</label>
-  <input type="text" name = "image_url">
+  <input type="text" name = "image_url" value = "{{user_data.image_url}}">
 
   <!-- cancel button -->
   <button type="submit">Add</button>

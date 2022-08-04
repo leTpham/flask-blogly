@@ -15,7 +15,7 @@ DEFAULT_IMAGE_URL = "https://static.independent.co.uk/2021/12/03/15/Pisco%20Cat%
 
 
 class User(db.Model):
-    """Pet."""
+    """User"""
 
     __tablename__ = "users"
 
@@ -28,22 +28,24 @@ class User(db.Model):
                      nullable=False)
     image_url = db.Column(db.Text,
                     nullable=True,
-                    default = DEFAULT_IMAGE_URL) #maybe DEFAULT here??
+                    default = DEFAULT_IMAGE_URL)
+    posts = db.relationship('Post', backref = 'user')
 
+class Post(db.Model):
+    """Post"""
 
-    # def greet(self):
-    #     """Greet using name."""
+    __tablename__ = "posts"
 
-    #     return f"I'm {self.name} the {self.species or 'thing'}"
-
-    # def feed(self, units=10):
-    #     """Nom nom nom."""
-
-    #     self.hunger -= units
-    #     self.hunger = max(self.hunger, 0)
-
-    # @classmethod
-    # def get_by_species(cls, species):
-    #     """Get all pets matching that species."""
-
-    #     return cls.query.filter_by(species=species).all()
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    title = db.Column(db.String(50),
+                     nullable=False)
+    content = db.Column(db.Text,
+                     nullable=False)
+    created_at = db.Column(db.DateTime,
+                     nullable=False,
+                    default=db.func.now)
+    user_id = db.Column(db.Text,
+                     db.ForeignKey('users.id'),
+                      nullable=False,)
